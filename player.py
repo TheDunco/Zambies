@@ -1,9 +1,13 @@
+'''Zambies: Player class
+Created Fall 2018
+@author: Duncan Van Keulen (djv78)
+'''
 
 import pygame
 
 
 class Player:
-
+    ''' Class for making the player object'''
     def __init__(self, display):
         '''Constructor for Player class'''
         # Dimensions are 28x39

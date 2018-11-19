@@ -1,9 +1,13 @@
-
+'''Zambies: Zombie class
+Created Fall 2018
+@author: Duncan Van Keulen (djv78)
+'''
 import pygame
 import random
 
 
 class Zombie:
+    ''' Class for making zombie objects'''
 
     def __init__(self, display):
         '''Constructor for Zombie class'''
