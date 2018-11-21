@@ -9,7 +9,7 @@ Created Fall 2018
 
 import pygame
 import random
-from levels import level_1
+from levels import levels
 from player import Player
 from zombie import Zombie
 
@@ -37,7 +37,8 @@ zombie_list = [zombie_init]
 
 
 def add_zombies(instances, speed=0.7, speed_level=1):
-    ''' Adds specified number of zombies to zombie_list'''
+    ''' Adds specified number of zombies to zombie_list'''\
+
     instances += 1
     if speed_level == 1:
         speed *= random.randint(9, 12)/10
@@ -45,6 +46,11 @@ def add_zombies(instances, speed=0.7, speed_level=1):
         speed *= random.randint(10, 14)/10
     if speed_level == 3:
         speed *= random.randint(11, 16)/10
+    if speed_level == 4:
+        speed *= random.randint(14, 20)/10
+    if speed_level == 5:
+        speed *= random.randint(16, 26)/10
+
     for number in range(instances):
         name = 'zombie{num} = Zombie(gameDisplay)\nzombie{num}.set_speed({speed})\nzombie_list.append(zombie{num})'\
             .format(num=number, speed=speed)
@@ -73,6 +79,8 @@ def game_loop():
     player.set_speed(2.5)
 
     zombie_speed = 0.7
+
+    level = 1
 
     # Main loop
     while not dead:
@@ -116,10 +124,31 @@ def game_loop():
         # Set the start position and update the player position
         player.set_position((player_x, player_y))
 
+        # Player death logic
+        if player.get_health() < 0:
+            dead = True
+
         # FIXME: Put player/zombie collision logic here
 
-        # Try to execute the spawn code for level 1
-        exec(level_1)
+        # Level switching logic
+        if level == 1:
+            exec(levels[0])
+            if loops > 40*FPS:
+                loops = 0
+                level += 1
+        elif level == 2:
+            exec(levels[1])
+            if loops > 40*FPS:
+                loops = 0
+                level += 1
+        elif level == 3:
+            if loops > 40*FPS:
+                loops = 0
+            exec(levels[2])
+        elif level == 4:
+            if loops > 40* FPS:
+                loops = 0
+            exec(levels[3])
 
         for zombie in zombie_list:
             zombie.update_position()

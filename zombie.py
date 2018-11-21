@@ -2,6 +2,7 @@
 Created Fall 2018
 @author: Duncan Van Keulen (djv78)
 '''
+
 import pygame
 import random
 
@@ -35,7 +36,16 @@ class Zombie:
         self.update_position()
 
     def set_health(self, health):
+        '''Set the health of the zombie'''
         self._health = health
+
+    def get_health(self):
+        '''Return the health of the zombie'''
+        return self._health
+
+    def wound(self, multiplier=1):
+        '''Take 1 point away from health times the optional multiplier'''
+        self._health -= (1 * multiplier)
 
     def player_location(self, x, y):
         '''Receive and update the position of the player'''
