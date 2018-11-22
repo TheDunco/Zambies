@@ -34,29 +34,37 @@ clock = pygame.time.Clock()
 # Set the background image
 background_image = pygame.image.load('background2.png')
 
+player_x = display_width / 2
+player_y = display_height / 2
 
-def add_zombies(instances, speed, health):
-    instances += 1
-    for i in range(instances):
-        rand_x = random.randrange(display_width - 37)
-        rand_y = random.randrange(display_height - 37)
-        zombie = Zombie(speed, health, rand_x, rand_y)
+zombie_list = pygame.sprite.Group()
+all_sprites_list = pygame.sprite.Group()
 
-        zombie_list.add(zombie)
-        all_sprites_list.add(zombie)
+player = Player(3, 100, player_x, player_y)
+all_sprites_list.add(player)
+
+
+def create_zombie(speed=0.7, health=100):
+    ''' Returns a zombie with set speed and health and random coordinates'''
+    rand_x = random.randrange(display_width - 37)
+    rand_y = random.randrange(display_height - 37)
+    zombie = Zombie(speed, health, rand_x, rand_y)
+
+    return zombie
 
 
 def game_loop():
+    ''' Main game loop, runs game with movement and collision and inputs...'''
     done = False
 
     player_x = display_width/2
     player_y = display_height/2
 
-    zombie_list = pygame.sprite.Group()
-    all_sprites_list = pygame.sprite.Group()
-
-    player = Player(1, 100, player_x, player_y)
-    all_sprites_list.add(player)
+    # Add 1 zombie to sprite groups
+    for i in range(3):
+        zombie = create_zombie()
+        zombie_list.add(zombie)
+        all_sprites_list.add(zombie)
 
     while not done:
         for event in pygame.event.get():
@@ -69,11 +77,15 @@ def game_loop():
 
         player.move()
 
-        # zombie_list.draw(gameDisplay)
+        for zombie in zombie_list:
+            zombie.update_player_coords(player.get_x(), player.get_y())
+            zombie.move()
+
         all_sprites_list.draw(gameDisplay)
 
         pygame.display.update()
 
+        clock.tick(FPS)
 
 
 game_loop()

@@ -8,7 +8,7 @@ import math
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, speed=2.5, init_health=100, player_x=0, player_y=0):
+    def __init__(self, speed=3, init_health=100, player_x=0, player_y=0):
         ''' Constructor for Player sprite class'''
         super().__init__()
         self.health = init_health
@@ -17,9 +17,6 @@ class Player(pygame.sprite.Sprite):
         self.original_image = self.image
         self.x = player_x
         self.y = player_y
-        self.change_x = 0
-        self.change_y = 0
-        self.angle = 0
 
         self.rect = self.image.get_rect()
 
@@ -28,10 +25,6 @@ class Player(pygame.sprite.Sprite):
 
     def get_y(self):
         return self.y
-
-    def update_coords(self, x, y):
-        self.x = x
-        self.y = y
 
     def move(self):
         ''' Adopted from code by @author: dustin bennett
@@ -46,8 +39,14 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.original_image, int(angle))
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
-        self.x += self.speed * math.sin(angle)
-        self.y += self.speed * math.cos(angle)
+        x_change_factor = round((self.speed * math.sin(angle)), 2)
+        y_change_factor = round((self.speed * math.cos(angle)), 2)
+
+        self.x += x_change_factor
+        self.y += y_change_factor
+
+        # print('Angle:', angle, ' | relx:', rel_x, ' |rely', rel_y, ' | YFacor:', y_change_factor, \
+        #       ' | XFactor:', x_change_factor, ' | X:',self.x, ' | Y:',self.y)
 
 
 # class Player:

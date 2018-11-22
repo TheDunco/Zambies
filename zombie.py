@@ -13,9 +13,30 @@ class Zombie(pygame.sprite.Sprite):
         super().__init__()
         self.health = init_health
         self.speed = speed
-        self.zombie_image = pygame.image.load('zombie.png')
-        self.x = zomb_x
-        self.y = zomb_y
+        self.image = pygame.image.load('zombie.png')
+        self.zombie_x = zomb_x
+        self.zombie_y = zomb_y
+        self.player_x = 0
+        self.player_y = 0
+
+        self.rect = self.image.get_rect()
+
+    def update_player_coords(self, x, y):
+        ''' Update the current position of the player'''
+        self.player_x = x
+        self.player_y = y
+
+    def move(self):
+        ''' Zombie AI roaming functionality'''
+        if self.zombie_x > self.player_x:
+            self.rect.x -= self.speed
+        if self.zombie_x < self.player_x:
+            self.rect.x += self.speed
+
+        if self.zombie_y > self.player_y:
+            self.rect.y -= self.speed
+        if self.zombie_y < self.player_y:
+            self.rect.y += self.speed
 
 
 
